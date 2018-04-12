@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+require 'open3'
+
+puts "hello world!"
+p "hello world!"
+p ARGV
+
+exitstatus = 0
+
+ARGV.each do |arg|
+  if arg == "fail"
+    $stderr.puts "Doing something with #{arg}..."
+    exitstatus = 1
+  else
+    puts "Doing something with #{arg}..."
+  end
+end
+
+cmd = "echo 'hello world'"
+stdout, stderr, status = Open3.capture3(cmd)
+if status.success?
+  puts stdout
+  $stdout.puts stdout
+else
+  $stderr.puts stderr
+end
+
+cmd = "ls idontexist"
+stdout, stderr, status = Open3.capture3(cmd)
+if status.success?
+  puts stdout
+  $stdout.puts stdout
+else
+  $stderr.puts stderr
+end
+
+exit exitstatus
